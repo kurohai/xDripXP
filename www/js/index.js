@@ -62,7 +62,7 @@ var app = {
 
 function checkConnected(device) {
     // Usage!
-    sleep(500).then(() => {
+    sleep(1000).then(() => {
         // Do something after the sleep!
         ble.isConnected(
             device.id,
