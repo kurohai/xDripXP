@@ -29,7 +29,9 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-        document.addEventListener('obj_id', this.derpHarder, false);
+        // document.addEventListener("obj_id", this.derpHarder, false);
+        document.getElementById("obj_id").addEventListener("click", this.derpHarder, false);
+
     },
 
     // deviceready Event Handler
@@ -50,10 +52,10 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
-        document.getElementById("obj_id").addEventListener("click", this.derpHarder, false);
     },
 
     derpHarder: function() {
+
         initBLE();
 
         scanDexcom();
@@ -67,7 +69,7 @@ function checkConnected(device) {
         ble.isConnected(
             device.id,
             function() {
-                alert("Device is connected: " + device.name);
+                alert("P2 Device is connected: " + device.name);
             },
             function() {
                 alert("Device is *not* connected: " + device.name);
@@ -93,7 +95,7 @@ function foundDevice(device) {
 
     console.log("device ads: " + deviceInfo);
 
-    addScannedDeviceDetails(device);
+    addScannedDeviceDetailsRatchet(device);
 
     checkForDexcom(device);
 };
@@ -103,29 +105,16 @@ function bytesToString(buffer) {
 };
 
 function toHexString(byteArray) {
-    // for (i = 0; i < byteArray.length; i++) {
-    //     byte =
     return byteArray.map(function(byte) {
         return ('0' + (byte & 0xFF).toString(16)).slice(-2);
     }).join('')
 };
 
-// for (i = 0; i < array.length; i++) {
-//     text += cars[i] + "<br>";
-// };
-
-
-
 function scanDexcom() {
     // do scan
+    $("p.received").text("Scanning");
     ble.scan([], 360, foundDevice, console.log("err in scan"));
 };
-
-// function scanDexcom2() {
-//     // do scan
-//     bluetoothle.startScan([], 360, foundDevice(device), console.log("err in scan"));
-// };
-
 
 function checkForDexcom(device) {
     // check found device for dexcom
@@ -133,17 +122,20 @@ function checkForDexcom(device) {
     var deviceInfo = JSON.stringify(device);
     if (device.name.indexOf("Dexcom") != -1) {
         console.log("Found Dexcom! \n" + deviceInfo);
-        addScannedServiceDetails(device);
+        // addScannedServiceDetails(device);
         connectDexcom(device);
-        checkConnected(device);
+        // checkConnected(device);
     } else {
+        addScannedDeviceDetailsRatchet(device);
         console.log("not dexcom: \n" + deviceInfo);
     };
 };
 
 function connectSuccess(status) {
     status = formatCB(status);
-    console.log("connection successful! " + status);
+    checkConnected(device);
+
+    console.log("P1 connection successful! " + status);
 };
 
 function formatCB(val) {
@@ -159,7 +151,7 @@ function initializeResult(status) {
     status = formatCB(status);
     console.log("init result: " + status);
 
-}
+};
 
 function initBLE() {
     params = {
@@ -172,7 +164,7 @@ function initBLE() {
 
 function connectDexcom(device) {
     // do connect
-    // not working yet
+    // partially working
     var params = {
         "address": device.id
     };
@@ -200,19 +192,6 @@ function scanServices(device) {
     );
 };
 
-function addScannedDeviceDetails(device) {
-    // update found devices table on scan page
-
-    var devicetable = document.getElementById("deviceList");
-    var row = devicetable.insertRow(-1);
-    var dev_id = row.insertCell(0);
-    var dev_name = row.insertCell(1);
-    var dev_rssi = row.insertCell(2);
-    dev_id.innerHTML = device.id;
-    dev_name.innerHTML = device.name;
-    dev_rssi.innerHTML = device.rssi;
-};
-
 function addScannedServiceDetails(device) {
     // update found device services on scan page
 
@@ -226,12 +205,31 @@ function addScannedServiceDetails(device) {
     dev_srv.innerHTML = '<input type="button" value="' + device.name + ' id="con_obj" />';
 };
 
+function addScannedDeviceDetailsRatchet(device) {
+    // update found devices table on scan page
+
+    $("#deviceListRatchet").append(
+        "<li class=\"table-view-cell\">" +
+        device.name +
+        "  " +
+        device.id +
+        " <button class=\"btn\">Connect</button></li>"
+    );
+    // <li class=\"table-view-cell\">Item 1 <button class=\"btn\">Button</button></li>
+    // <li class="table-view-cell">Item 1 <button class="btn">Button</button></li>
+    // <li class="table-view-cell">Item 2 <button class="btn btn-primary">Button</button></li>
+    // <li class="table-view-cell">Item 3 <button class="btn btn-positive">Button</button></li>
+    // <li class="table-view-cell">Item 4 <button class="btn btn-negative">Button</button></li>
+};
 
 
 function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 };
 
-
-
 app.initialize();
+
+// function scanDexcom2() {
+//     // do scan
+//     bluetoothle.startScan([], 360, foundDevice(device), console.log("err in scan"));
+// };

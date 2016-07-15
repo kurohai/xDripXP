@@ -32,46 +32,51 @@
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="lib/ratchet/css/ratchet.css">
+        <link rel="stylesheet" type="text/css" href="lib/ratchet/css/ratchet-theme-android.css">
         <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>Hello Kuro</title>
+        <title>HelloDexcom</title>
     </head>
     <body>
+
         <div class="app">
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">
+            <header class="bar bar-nav">
+                <button class="btn pull-left">
+                    Left
+                </button>
+                <button id="obj_id" class="btn pull-right">
+                    Right
+                </button>
+                <h1 class="title">HelloDexcom</h1>
+            </header>
+            <nav class="bar bar-tab">
+              <a class="tab-item active" href="#">
+                <span class="icon icon-home"></span>
+                <span class="tab-label">Home</span>
+              </a>
+              <a class="tab-item" href="#">
+                <span class="icon icon-person"></span>
+                <span class="tab-label">Scan</span>
+              </a>
+              <a class="tab-item" href="#">
+                <span class="icon icon-gear"></span>
+                <span class="tab-label">Settings</span>
+              </a>
+
+            </nav>
+
+            <div id="deviceready">
+                <p class="event listening" class="blink">Connecting to Device</p>
+                <p class="event received" class="blink">
                     <a href="./hello.html">Device is Ready</a>
                 </p>
+            </div>
             <h1>Dexcom Scanner</h1>
-                <table id="deviceList" class="fuckingTable">
-                    <thead>
-                        <th class="tbid">id</th>
-                        <th>name</th>
-                        <th>rssi</th>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-            <input type="button" id="obj_id" value="Begin Scan" />
-            <div>
-                <h1>Dexcom Devices</h1>
-                    <table id="deviceFound" class="fuckingTable">
-                        <thead>
-                            <th class="tbid">id</th>
-                            <th>name</th>
-                            <th>connect</th>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
-
-            </div>
-            </div>
+            <ul id="deviceListRatchet" class="table-view"></ul>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript" src="js/handlebars-v4.0.5.js"></script>
+        <script type="text/javascript" src="lib/handlebars-v4.0.5.js"></script>
+        <script type="text/javascript" src="lib/jquery-3.1.0.js"></script>
     </body>
 </html>
