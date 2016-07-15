@@ -51,3 +51,10 @@ IOS/www/
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
+
+
+# Sublime project stuff
+*.sublime-*
+
+# Node?
+node_modules/
