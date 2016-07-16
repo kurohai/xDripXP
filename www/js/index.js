@@ -21,6 +21,7 @@ var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
+
     },
 
     // Bind Event Listeners
@@ -31,6 +32,8 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
         // document.addEventListener("obj_id", this.derpHarder, false);
         document.getElementById("obj_id").addEventListener("click", this.derpHarder, false);
+        // $("#oop-btn-01").addEventListener("click", kuroapp.derpHarder, false);
+        // document.addEventListener("deviceready", kuroapp.init, false);
 
     },
 
@@ -40,6 +43,8 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        kuroapp.init();
+
     },
 
     // Update DOM on a Received Event
