@@ -21,7 +21,6 @@ var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
-
     },
 
     // Bind Event Listeners
@@ -30,11 +29,10 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-        // document.addEventListener("obj_id", this.derpHarder, false);
-        document.getElementById("obj_id").addEventListener("click", this.derpHarder, false);
-        // $("#oop-btn-01").addEventListener("click", kuroapp.derpHarder, false);
-        // document.addEventListener("deviceready", kuroapp.init, false);
-
+        document.getElementById("obj_id").addEventListener("click", this.startDexcomScan, false);
+        document.getElementById("activate-main").addEventListener("click", this.activateMainApp, false);
+        document.getElementById("activate-scan").addEventListener("click", this.activateScanApp, false);
+        document.getElementById("activate-debug").addEventListener("click", this.activateDebugApp, false);
     },
 
     // deviceready Event Handler
@@ -44,7 +42,9 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
         kuroapp.init();
-
+        kuroapp.screenMain = document.getElementById("main-app");
+        kuroapp.screenScan = document.getElementById("scan-app");
+        kuroapp.screenDebug = document.getElementById("debug-app");
     },
 
     // Update DOM on a Received Event
@@ -52,19 +52,51 @@ var app = {
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
-
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
+        kuroapp.log('Received Event: ' + id);
     },
 
-    derpHarder: function() {
-
+    startDexcomScan: function() {
+        // onclick callback to initialize ble and start scan
         initBLE();
-
         scanDexcom();
-    }
+    },
+
+    activateMainApp: function() {
+        // body...
+        kuroapp.log("activating main app");
+        kuroapp.screenMain.setAttribute('style', 'display: block;');
+        kuroapp.screenScan.setAttribute('style', 'display: none;');
+        kuroapp.screenDebug.setAttribute('style', 'display: none;');
+        $("#activate-main").addClass("active");
+        $("#activate-scan").removeClass("active");
+        $("#activate-debug").removeClass("active");
+    },
+
+    activateScanApp: function() {
+        // body...
+        kuroapp.log("activating scan app");
+        kuroapp.screenMain.setAttribute('style', 'display: none;');
+        kuroapp.screenScan.setAttribute('style', 'display: block;');
+        kuroapp.screenDebug.setAttribute('style', 'display: none;');
+        $("#activate-main").removeClass("active");
+        $("#activate-scan").addClass("active");
+        $("#activate-debug").removeClass("active");
+    },
+
+    activateDebugApp: function() {
+        // body...
+        kuroapp.log("activating debug app");
+        kuroapp.screenMain.setAttribute('style', 'display: none;');
+        kuroapp.screenScan.setAttribute('style', 'display: none;');
+        kuroapp.screenDebug.setAttribute('style', 'display: block;');
+        $("#activate-main").removeClass("active");
+        $("#activate-scan").removeClass("active");
+        $("#activate-debug").addClass("active");
+    },
+
+
 };
 
 function checkConnected(device) {
@@ -90,7 +122,7 @@ function foundDevice(device) {
 
     var deviceInfo = JSON.stringify(device);
 
-    console.log("found device: " + deviceInfo);
+    kuroapp.log("found device: " + deviceInfo);
 
     // device.services = new Uint8Array(device.advertising);
     device.services = new Uint8Array(device.advertising);
@@ -98,7 +130,7 @@ function foundDevice(device) {
     // device.services = bytesToString(device.advertising);
     var deviceInfo = JSON.stringify(device);
 
-    console.log("device ads: " + deviceInfo);
+    kuroapp.log("device ads: " + deviceInfo);
 
     addScannedDeviceDetailsRatchet(device);
 
@@ -118,7 +150,7 @@ function toHexString(byteArray) {
 function scanDexcom() {
     // do scan
     $("p.received").text("Scanning");
-    ble.scan([], 360, foundDevice, console.log("err in scan"));
+    ble.scan([], 360, foundDevice, kuroapp.log("err in scan"));
 };
 
 function checkForDexcom(device) {
@@ -126,13 +158,13 @@ function checkForDexcom(device) {
 
     var deviceInfo = JSON.stringify(device);
     if (device.name.indexOf("Dexcom") != -1) {
-        console.log("Found Dexcom! \n" + deviceInfo);
+        kuroapp.log("Found Dexcom! \n" + deviceInfo);
         // addScannedServiceDetails(device);
-        connectDexcom(device);
+        // connectDexcom(device);
         // checkConnected(device);
     } else {
         addScannedDeviceDetailsRatchet(device);
-        console.log("not dexcom: \n" + deviceInfo);
+        kuroapp.log("not dexcom: \n" + deviceInfo);
     };
 };
 
@@ -140,7 +172,7 @@ function connectSuccess(status) {
     status = formatCB(status);
     checkConnected(device);
 
-    console.log("P1 connection successful! " + status);
+    kuroapp.log("P1 connection successful! " + status);
 };
 
 function formatCB(val) {
@@ -149,12 +181,12 @@ function formatCB(val) {
 
 function connectError(status) {
     status = formatCB(status);
-    console.log("connection error! " + status);
+    kuroapp.log("connection error! " + status);
 };
 
 function initializeResult(status) {
     status = formatCB(status);
-    console.log("init result: " + status);
+    kuroapp.log("init result: " + status);
 
 };
 
@@ -173,7 +205,7 @@ function connectDexcom(device) {
     var params = {
         "address": device.id
     };
-    console.log("connection to: " + formatCB(params));
+    kuroapp.log("connection to: " + formatCB(params));
     bluetoothle.connect(connectSuccess, connectError, params);
 
 };
@@ -213,13 +245,32 @@ function addScannedServiceDetails(device) {
 function addScannedDeviceDetailsRatchet(device) {
     // update found devices table on scan page
 
+    var listID = "list-" + device.id;
+    var listIDp = "#" + listID;
     $("#deviceListRatchet").append(
-        "<li class=\"table-view-cell\">" +
+        "<li class=\"table-view-cell\" id=\"" + listID + "\">" +
         device.name +
         "  " +
         device.id +
-        " <button class=\"btn\">Connect</button></li>"
+        " <button id=\"" + device.id + "\" class=\"btn\">Connect</button></li>"
     );
+    // var parentObj = document.getElementById("deviceListRatchet");
+    // var listItem = document.getElementById(listID);
+    // var button = parentObj.querySelector("#"+device.id);
+    // kuroapp.log("parent table: " + parentObj.className);
+    // kuroapp.log("listItem id: " + listItem.id);
+    // kuroapp.log("listItem id: " + listItem.className);
+    var button = document.getElementById(device.id);
+    kuroapp.log("button: " + button.className);
+    button.addEventListener("click", function(){kuroapp.connect(device)}, false);
+
+
+    // kuroapp.log("button added: " + button.id);
+
+    // var parentObj = document.getElementById("oop-test-01").addEventListener("click", function(){kuroapp.connect(device.id)}, false);
+    // $("#"+device.id).on("click", function(){kuroapp.connect(device.id)});
+
+
     // <li class=\"table-view-cell\">Item 1 <button class=\"btn\">Button</button></li>
     // <li class="table-view-cell">Item 1 <button class="btn">Button</button></li>
     // <li class="table-view-cell">Item 2 <button class="btn btn-primary">Button</button></li>
@@ -236,5 +287,5 @@ app.initialize();
 
 // function scanDexcom2() {
 //     // do scan
-//     bluetoothle.startScan([], 360, foundDevice(device), console.log("err in scan"));
+//     bluetoothle.startScan([], 360, foundDevice(device), kuroapp.log("err in scan"));
 // };

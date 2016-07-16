@@ -15,6 +15,9 @@
         },
         "cordova-plugin-ble-central": {
             "PACKAGE_NAME": "io.cordova.hellocordova"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.kurohai.hellodexcom"
         }
     },
     "dependent_plugins": {

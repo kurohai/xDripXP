@@ -4,21 +4,34 @@ var kuroapp = {
         this.log(this.template_dir);
         this.log("KuroApp starting...");
         // document.getElementById("oop-btn-01").addEventListener("click", this.hello, false);
-        $("#oop-btn-01").on("click", this.hello);
+        // $("#oop-btn-01").on("click", this.hello);
+        this.bindEvents();
         this.log("KuroApp initialized!");
+    },
+
+    bindEvents: function() {
+        // body
+        $("#oop-btn-01").on("click", kuroapp.hello);
     },
 
     hello: function() {
         // alert("Hello, " + name);
-        // this.setName(name);
+        // kuroapp.setName(name);
 
-        alert("Hello, " + kuroapp.template_dir);
+        kuroapp.log("Connecting...");
+    },
+
+    connect: function(device) {
+        // alert("Hello, " + name);
+
+        kuroapp.log("Connecting to: " + device.id);
+        connectDexcom(device);
     },
 
     setName: function(input) {
         // body...
         alert("setting name attribute");
-        this.name = input;
+        kuroapp.name = input;
     },
 
     log: function(logString) {
@@ -27,6 +40,8 @@ var kuroapp = {
 
         console.log(logString);
         $("#oop-test-01").append(template.replace("{{text}}", logString));
-    }
+    },
+
+
 
 }

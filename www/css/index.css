@@ -25,6 +25,9 @@ body {
     -webkit-text-size-adjust:  none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select:  text;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     background-color: #E4E4E4;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+
     /*background-image: linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);*/
     /*background-image: -webkit-linqear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);*/
     /*background-image: -ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);*/
@@ -45,6 +48,7 @@ body {
     text-transform: uppercase;
     width: 100%;
     text-align: center;
+    padding-bottom:120px;
 
 }
 
@@ -55,11 +59,11 @@ body {
     text-align: center;
     margin-left: 10%;
     margin-top: 110px;
-                                   /* offset horizontal:  half of text area width */
-}
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom:120px;
 
-.bar-tab {
-    margin-top:  55px;
+                                   /* offset horizontal:  half of text area width */
 }
 
 /* Landscape layout (with min-width) */
@@ -72,16 +76,38 @@ body {
     }
 }
 
+
+#main-app {
+    display: block;
+}
+
+#scan-app {
+    display: none;
+}
+
+#debug-app {
+    display: none;
+}
+
+.title {
+    text-align: center;
+}
+
+
+.bar-tab {
+    margin-top:  55px;
+}
+
 .fuckingTable {
     test-align:  center;
     width: 50%;
     margin-left: 25%;
 }
 
-#obj_id {
+/*#obj_id {
     margin-bottom: 10%;
 }
-
+*/
 h1 {
     font-size: 24px;
     font-weight: normal;

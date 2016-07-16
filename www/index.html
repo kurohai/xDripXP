@@ -31,7 +31,7 @@
         <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <meta name="viewport" content="user-scalable=yes, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <link rel="stylesheet" type="text/css" href="lib/ratchet/css/ratchet.css">
         <link rel="stylesheet" type="text/css" href="lib/ratchet/css/ratchet-theme-android.css">
         <link rel="stylesheet" type="text/css" href="css/index.css">
@@ -42,27 +42,26 @@
         <div class="app">
             <header class="bar bar-nav">
                 <button class="btn pull-left">
-                    Left
+                    Derp Harder
                 </button>
                 <button id="obj_id" class="btn pull-right">
-                    Right
+                    Start Scan
                 </button>
                 <h1 class="title">HelloDexcom</h1>
             </header>
             <nav class="bar bar-tab">
-              <a class="tab-item active" href="#">
+              <a class="tab-item active" href="#" id="activate-main">
                 <span class="icon icon-home"></span>
                 <span class="tab-label">Home</span>
               </a>
-              <a class="tab-item" href="#">
+              <a class="tab-item" href="#" id="activate-scan">
                 <span class="icon icon-person"></span>
                 <span class="tab-label">Scan</span>
               </a>
-              <a class="tab-item" href="#">
+              <a class="tab-item" href="#" id="activate-debug">
                 <span class="icon icon-gear"></span>
-                <span class="tab-label">Settings</span>
+                <span class="tab-label">Debugging</span>
               </a>
-
             </nav>
 
             <div id="deviceready">
@@ -71,16 +70,29 @@
                     <a href="./hello.html">Device is Ready</a>
                 </p>
             </div>
-            <h1>Dexcom Scanner</h1>
-            <ul id="deviceListRatchet" class="table-view"></ul>
 
-            <br />
-            <h1>Debug Logs</h1>
-            <ul id="oop-test-01" class="oop-test-01 table-view-cell ">
-                <li class="table-view-cell">
-                    Click Me --> <button id="oop-btn-01" value="derper" class="btn">This Here Button</button>
-                </li>
-            </ul>
+            <div id="main-app">
+                <h1>Hello Dexcom</h1>
+                <p>Herpa derps</p>
+                <p>Herpa derps</p>
+                <p>Herpa derps</p>
+                <p>Herpa derps</p>
+                <p>Herpa derps</p>
+                <p>Herpa derps</p>
+                <p>Herpa derps</p>
+                <p>Herpa derps</p>
+                <p>Herpa derps</p>
+            </div>
+
+            <div id="scan-app">
+                <h1>Dexcom Scanner</h1>
+                <ul id="deviceListRatchet" class="table-view"></ul>
+            </div>
+
+            <div id="debug-app">
+                <h1>Debug Logs</h1>
+                <ul id="oop-test-01" class="oop-test-01 table-view-cell "></ul>
+            </div>
         </div>
 
         <script type="text/javascript" src="cordova.js"></script>
